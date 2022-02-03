@@ -11,6 +11,8 @@ WINDOW_NAME = "MapsAPI"
 FULLSCREEN = False
 api_server = "https://search-maps.yandex.ru/v1/"
 api_key = "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3"
+coordinates = (0, 0)
+X, Y = (0, 0)
 
 
 class PyQtWindow(QMainWindow, finding_map.Ui_MainWindow):
@@ -19,8 +21,17 @@ class PyQtWindow(QMainWindow, finding_map.Ui_MainWindow):
         super().setupUi(self)
 
     def next(self):
+        coordinates = (int(self.lineEdit.text()), int(self.lineEdit_2.text()))
+        X, Y = int(self.lineEdit.text()), int(self.lineEdit_2.text())
         return self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text(),\
                self.lineEdit_4.text()
+
+
+def find_map():
+    app = QApplication(sys.argv)
+    ex = PyQtWindow()
+    ex.show()
+    sys.exit(app.exec())
 
 
 class Programme:
@@ -42,12 +53,6 @@ class Programme:
                     self.isWindowOpen = False
             pygame.display.flip()
 
-    def find_map(self):
-        app = QApplication(sys.argv)
-        ex = PyQtWindow()
-        ex.show()
-        sys.exit(app.exec())
-
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
@@ -55,4 +60,4 @@ def except_hook(cls, exception, traceback):
 
 if __name__ == "__main__":
     window = Programme(WIDTH, HEIGHT, WINDOW_NAME, FULLSCREEN)
-    window.find_map()
+    find_map()
