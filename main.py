@@ -1,9 +1,26 @@
 import pygame
+import requests
+import sys
+import finding_map
+from PyQt5.QtWidgets import QLabel, QApplication, QMainWindow
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-WIDTH, HEIGHT = 600, 600
+WIDTH, HEIGHT = 300, 300
 WINDOW_NAME = "MapsAPI"
 FULLSCREEN = False
+api_server = "https://search-maps.yandex.ru/v1/"
+api_key = "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3"
+
+
+class PyQtWindow(QMainWindow, finding_map.Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+        super().setupUi(self)
+
+    def next(self):
+        return self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text(),\
+               self.lineEdit_4.text()
 
 
 class Programme:
@@ -25,7 +42,17 @@ class Programme:
                     self.isWindowOpen = False
             pygame.display.flip()
 
+    def find_map(self):
+        app = QApplication(sys.argv)
+        ex = PyQtWindow()
+        ex.show()
+        sys.exit(app.exec())
+
+
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
+
 
 if __name__ == "__main__":
     window = Programme(WIDTH, HEIGHT, WINDOW_NAME, FULLSCREEN)
-    window.loop()
+    window.find_map()
