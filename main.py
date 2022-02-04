@@ -16,48 +16,20 @@ X, Y = (0, 0)
 
 
 class PyQtWindow(QMainWindow, finding_map.Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, width, height, window_name="NO_NAME"):
         super().__init__()
         super().setupUi(self)
-
-    def next(self):
-        coordinates = (int(self.lineEdit.text()), int(self.lineEdit_2.text()))
-        X, Y = int(self.lineEdit.text()), int(self.lineEdit_2.text())
-        return self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text(),\
-               self.lineEdit_4.text()
-
-
-def find_map():
-    app = QApplication(sys.argv)
-    ex = PyQtWindow()
-    ex.show()
-    sys.exit(app.exec())
-
-
-class Programme:
-    def __init__(self, width, height, window_name="NO_NAME", fullscreen=False):
-        self.isWindowOpen = True
-        self.width = width
-        self.height = height
-        pygame.init()
-        if not fullscreen:
-            pygame.display.set_mode((width, height))
-        else:
-            pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        pygame.display.set_caption(window_name)
-
-    def loop(self):
-        while self.isWindowOpen:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.isWindowOpen = False
-            pygame.display.flip()
+        self.pushButton.clicked.connect(self.exit)
 
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
 
+sys.excepthook = except_hook
+
 if __name__ == "__main__":
-    window = Programme(WIDTH, HEIGHT, WINDOW_NAME, FULLSCREEN)
-    find_map()
+    app = QApplication(sys.argv)
+    ex = PyQtWindow(WIDTH, HEIGHT, WINDOW_NAME)
+    ex.show()
+    sys.exit(app.exec())
